@@ -2,13 +2,13 @@
     "name": "rtp-ogg-opus-examples",
     "version": "1.0.0",
     "description": "RTP Ogg/Opus Tools Examples",
-    "main": "index.js",
+    "main": "example1.js",
     "scripts": {
         "format": "prettier --write \"src/**/*.ts\"",
         "build": "tsc",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
-        "start": "node lib/index.js"
+        "example1": "node lib/example1.js"
     },
     "keywords": [
         "rtp-streaming",
