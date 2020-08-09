@@ -10,12 +10,12 @@ const debug = Debug('*');
 const options = {
     host: 'localhost',
     port: 4400,
-    file: path.join(appRoot.path, 'samples', 'sample1.opus'),
+    file: path.join(appRoot.path, 'samples/bensound-dreams.opus'),
 };
 
 const main = async () => {
     try {
-        debug('Running example1:', JSON.stringify(options));
+        debug('Running example:', JSON.stringify(options));
 
         const listener = new OpusListener(options);
         listener.listen();
