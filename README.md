@@ -15,7 +15,7 @@ npm run build
 
 Shows how to use **OggOpusToRtp** and **RtpOpusToPcm** transform stream classes from **rtp-ogg-opus** module to send and receive Opus streams through RTP.
 
-OpusPlayer class uses the **OggOpusToRtp** transform stream class to convert to RTP packets the opus stream read from a sample music file, and send them to port 4440. The OpusListener class uses **RtpOpusToPcm** to decode these RTP packets, convert them to Linear PCM and play them using node-speaker.
+OpusPlayer class uses the **OggOpusToRtp** transform stream to convert to RTP packets, the opus encoded audio read from a sample music file, and send them to port 4440. The OpusListener listens on port 4440, and uses **RtpOpusToPcm** to decode the received RTP packets, convert them to Linear PCM and playback the audio using node-speaker.
 
 ```
 npm run example1
