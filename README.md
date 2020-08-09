@@ -1,6 +1,6 @@
 # RTP Ogg/Opus Tools Examples
 
-TypeScript examples for [rtp-ogg-opus](https://github.com/libersys/rtp-ogg-opus.git) module.
+TypeScript examples for the [rtp-ogg-opus](https://github.com/libersys/rtp-ogg-opus.git) module.
 
 ## Installation
 
