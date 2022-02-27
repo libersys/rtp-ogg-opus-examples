@@ -9,8 +9,7 @@
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
         "example1": "node lib/example1.js",
-        "example2": "node lib/example2.js",
-        "streamTest": "node lib/streamTest.js"
+        "example2": "node lib/example2.js"
     },
     "keywords": [
         "rtp-streaming",
