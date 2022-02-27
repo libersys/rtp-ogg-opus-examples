@@ -1,6 +1,6 @@
 {
     "name": "rtp-ogg-opus-examples",
-    "version": "1.0.0",
+    "version": "1.0.13",
     "description": "RTP Ogg/Opus Tools Examples",
     "main": "example1.js",
     "scripts": {
@@ -8,7 +8,9 @@
         "build": "tsc",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
-        "example1": "node lib/example1.js"
+        "example1": "node lib/example1.js",
+        "example2": "node lib/example2.js",
+        "streamTest": "node lib/streamTest.js"
     },
     "keywords": [
         "rtp-streaming",
@@ -25,23 +27,24 @@
     "license": "MIT",
     "dependencies": {
         "app-root-path": "^3.0.0",
-        "rtp-ogg-opus": "^1.0.4",
-        "speaker": "git+https://github.com/libersys/node-speaker.git"
+        "rtp-ogg-opus": "^1.0.13",
+        "speaker": "^0.5.3"
     },
     "devDependencies": {
         "@types/app-root-path": "^1.2.4",
-        "@types/config": "0.0.36",
+        "@types/config": "^0.0.41",
         "@types/debug": "^4.1.5",
-        "@types/node": "^14.0.27",
-        "@typescript-eslint/eslint-plugin": "^3.7.1",
-        "@typescript-eslint/parser": "^3.7.1",
-        "eslint": "^7.5.0",
-        "eslint-config-prettier": "^6.11.0",
+        "@types/node": "^17.0.21",
+        "@typescript-eslint/eslint-plugin": "^5.12.1",
+        "@typescript-eslint/parser": "^5.12.1",
+        "debug": "^4.3.3",
+        "eslint": "^8.10.0",
+        "eslint-config-prettier": "^8.4.0",
         "eslint-config-typescript": "^3.0.0",
-        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-prettier": "^4.0.0",
         "prettier": "^2.0.5",
-        "ts-node": "^8.10.2",
+        "ts-node": "^10.5.0",
         "ts-node-dev": "^1.0.0-pre.56",
-        "typescript": "^3.9.7"
+        "typescript": "^4.5.5"
     }
 }

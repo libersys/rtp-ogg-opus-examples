@@ -4,7 +4,7 @@ import dgram from 'dgram';
 import { OggOpusToRtp } from 'rtp-ogg-opus';
 
 const client = dgram.createSocket('udp4');
-const debug = Debug('*');
+const debug = Debug('rtp-ogg-opus');
 
 class OpusPlayer {
     public readonly host: string;
@@ -17,54 +17,47 @@ class OpusPlayer {
         this.file = options.file;
     }
 
-    async play() {
-        try {
-            const reader = fs.createReadStream(this.file, { highWaterMark: 8192 });
-            const encoder = new OggOpusToRtp({ sampleRate: 48000, payloadType: 120 });
+    async play(): Promise<void> {
+        return new Promise(resolve => {
+            const audioReader = fs.createReadStream(this.file, { highWaterMark: 8192 });
+            const rtpEncoder = new OggOpusToRtp({ sampleRate: 48000, payloadType: 120 });
 
-            let interval: NodeJS.Timeout;
+            debug(`Sending opus file ${this.file}`);
+
+            // To store RTP encoded packets.
             const packets: Buffer[] = [];
 
             const frameSize = 20; // miliseconds
-            const overhead = 1; // miliseconds
-
-            let last = new Date().getTime();
+            const overhead = 5; // miliseconds - Increase if you are experiencing delays.
+            const sendInterval = frameSize - overhead;
 
             const sendPacket = () => {
                 try {
                     const packet = packets.shift();
-                    if (packet) client.send(packet, this.port, this.host);
 
-                    // Check interval
-                    const now = new Date().getTime();
-                    const elapsed = now - last;
+                    // Stop if no more packets.
+                    if (!packet) return resolve();
 
-                    if (elapsed > frameSize) {
-                        interval = setTimeout(sendPacket, 2 * frameSize - elapsed - overhead); // Speed up.
-                    } else {
-                        interval = setTimeout(sendPacket, frameSize - overhead); // Keep the same pace.
-                    }
+                    client.send(packet, this.port, this.host);
 
-                    last = now;
+                    setTimeout(sendPacket, sendInterval);
                 } catch (err) {
                     // On error, always try to keep sending packets.
-                    interval = setTimeout(sendPacket, frameSize - overhead);
+                    setTimeout(sendPacket, sendInterval);
                 }
             };
 
-            encoder.on('data', (chunk: Buffer) => {
-                if (chunk && chunk.length > 0) packets.push(chunk);
+            rtpEncoder.on('data', (packet: Buffer) => {
+                if (packet && packet.length > 0) packets.push(packet);
             });
 
-            reader.once('readable', () => {
-                debug(`Sending RTP packets to ${this.host}:${this.port}`);
-                interval = setTimeout(sendPacket, frameSize - overhead);
+            audioReader.once('readable', () => {
+                debug(`Sending opus file ${this.file}, audio stream started.`);
+                setTimeout(sendPacket, sendInterval);
             });
 
-            reader.pipe(encoder);
-        } catch (err) {
-            debug('error', err);
-        }
+            audioReader.pipe(rtpEncoder);
+        });
     }
 }
 

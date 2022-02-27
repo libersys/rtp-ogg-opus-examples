@@ -3,7 +3,7 @@ import dgram from 'dgram';
 import { RtpOpusToPcm } from 'rtp-ogg-opus';
 import Speaker from 'speaker';
 
-const debug = Debug('*');
+const debug = Debug('rtp-ogg-opus');
 
 class OpusListener {
     public readonly host: string;
@@ -14,8 +14,8 @@ class OpusListener {
         this.port = options.port;
     }
 
-    async listen() {
-        try {
+    async listen(): Promise<void> {
+        return new Promise(resolve => {
             const socket = dgram.createSocket('udp4');
             const decoder = new RtpOpusToPcm({ sampleRate: 48000, channels: 2 });
             const speaker = new Speaker({ sampleRate: 48000, channels: 2 });
@@ -31,16 +31,18 @@ class OpusListener {
                 decoder.write(msg);
             });
 
-            socket.bind({
-                port: this.port,
-                address: this.host,
-                exclusive: false,
-            });
-
-            debug(`Listening for RTP on port ${this.port}`);
-        } catch (err) {
-            debug('error', err);
-        }
+            socket.bind(
+                {
+                    port: this.port,
+                    address: this.host,
+                    exclusive: false,
+                },
+                () => {
+                    debug(`Listening for RTP on port ${this.port}`);
+                    resolve();
+                },
+            );
+        });
     }
 }
 
